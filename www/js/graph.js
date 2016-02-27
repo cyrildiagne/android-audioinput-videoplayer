@@ -1,13 +1,19 @@
 var graphCanvas, graphCtx;
 
-function setupCanvas() {
-  graphCanvas = document.getElementById("container")
-  graphCanvas.addEventListener('click', onCanvasClicked, false);
+function setupGraph() {
+  graphCanvas = document.getElementById("graph");
+  graphCanvas.addEventListener('click', onGraphClicked, false);
   graphCtx = graphCanvas.getContext("2d");
 }
 
-function onCanvasClicked(ev) {
-  log(ev.clientY);
+function onGraphClicked(ev) {
+  var padding = 10;
+  threshold = 1 - (ev.clientY - padding) / graphCanvas.clientHeight;
+}
+
+function updateGraph() {
+  // draw a frequency graph
+  drawFreq(fftBuffer);
 }
 
 function drawFreq(buf) {
@@ -15,11 +21,13 @@ function drawFreq(buf) {
   var w = graphCanvas.width;
   var h = graphCanvas.height;
 
+  // clear the canvas
   graphCtx.fillStyle = '#f7f7f7';
-  graphCtx.fillRect(0, 0, w, h);
+  graphCtx.clearRect(0, 0, w, h);
 
-  graphCtx.fillStyle = 'rgba(255,0,0,0.1)';
-  graphCtx.fillRect(0, h - Math.floor(threshold * h), w, 1);
+  // draw the graph
+  graphCtx.fillStyle = 'rgba(255,0,0,0.25)';
+  graphCtx.fillRect(0, h - Math.floor(threshold * h), w, 3);
   var barWidth = w / analyser.frequencyBinCount;
   for (var i = 0; i < analyser.frequencyBinCount; i++) {
     var value = buf[i];

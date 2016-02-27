@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Hello World</name>
+<widget id="ch.ecal.MilanTable" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Table</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Application that plays Webm video files on microphone square wave inputs
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="cyril.diagne@ecal.ch" href="http://ecal.ch">
+        ECAL
     </author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="default" />
+    <preference name="Orientation" value="landscape" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
@@ -25,6 +25,7 @@
     <preference name="android-installLocation" value="auto" />
     <gap:plugin name="org.apache.cordova.battery-status" />
     <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.media" />
     <gap:plugin name="org.apache.cordova.media-capture" />
     <gap:plugin name="org.apache.cordova.console" />
     <gap:plugin name="org.apache.cordova.contacts" />
@@ -82,4 +83,6 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="android" spec="~5.1.0" />
+    <plugin name="com.mediamatrixdoo.keepscreenon" spec="git://github.com/zoxxx/PhoneGap-KeepScreenOn-plugin.git" />
+    <plugin name="cordova-plugin-media" spec="~2.1.0" />
 </widget>

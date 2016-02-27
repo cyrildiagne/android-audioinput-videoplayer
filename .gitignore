@@ -1,4 +1,6 @@
 platforms/*
 plugins/*
 
+*.webm
+
 .DS_Store

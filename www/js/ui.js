@@ -7,7 +7,6 @@ function setupSelectUI(micsInfos) {
 
   miclist_el = document.querySelector('#mic-list');
   miclistlabel_el = document.querySelector('#mic-list-label');
-  // miclist_el.addEventListener('change', onSelectChange, false);
 
   for (var md of micsInfos) {
     // get moderated label
@@ -33,12 +32,12 @@ function setupSelectUI(micsInfos) {
 function liSelectedHandler(ev) {
   var deviceId = ev.target.getAttribute('data').split(':')[1]; // rocknroll
   deviceId = deviceId.replace(/[" ]/g, ''); // remove quotes & spaces
+
   //TODO(cyril.diagne) dispatch event instead to remove this logic from view
   setMicrophone(deviceId);
 }
 
 function setMicrophoneDisplay(micId) {
-  console.log(micId);
   var label = labelDict[micId];
   miclistlabel_el.querySelector('.mic-label').innerHTML = label;
 

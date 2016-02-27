@@ -4,16 +4,16 @@ navigator.getUserMedia = navigator.getUserMedia ||
 
 var audioContext,
     analyser,
-    analyserBuffer,
+    fftBuffer,
     mediaStreamSource,
     currStream;
 
 function setupAudio() {
   audioContext = new AudioContext();
   analyser = audioContext.createAnalyser();
-  analyser.fftSize = 512;
+  analyser.fftSize = 256;
   analyser.smoothingTimeConstant = 0;
-  analyserBuffer = new Uint8Array(analyser.frequencyBinCount);
+  fftBuffer = new Uint8Array(analyser.frequencyBinCount);
 }
 
 function getMicrophones(cb) {
@@ -40,11 +40,11 @@ function setMicrophone(microphoneDeviceId) {
 
 function requestUserMedia(deviceId, cb) {
   var opts = {
-      audio: {
-          optional: [{
-              sourceId: deviceId
-          }]
-      },
+    audio: {
+      optional: [{
+        sourceId: deviceId
+      }]
+    },
   };
   navigator.webkitGetUserMedia(opts, cb, function(err) {
     log("get user media error: " + err.name);
@@ -62,4 +62,22 @@ function createAnalyserSource(stream) {
   mediaStreamSource = audioContext.createMediaStreamSource(stream);
   // Connect it to the analyser
   mediaStreamSource.connect(analyser);
+}
+
+function updateAudioInputs() {
+  // populate the analyser buffer with frequency bytes
+  analyser.getByteFrequencyData(fftBuffer);
+
+  // look for trigger signal
+  for (var i = 0; i < analyser.frequencyBinCount; i++) {
+    var percent = fftBuffer[i] / 256;
+    // TODO(cyril.diagne) very basic / naive implementation where we only look
+    // for one bar with amplitude > threshold
+    // proper way will be to find the fundamental frequence of the square wave
+    if (percent > threshold) {
+        // TODO(cyril.diagne) dispatch event instead of calling directly
+        onAudioSignalTriggered();
+        return;
+    }
+  }
 }

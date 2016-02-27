@@ -1,51 +1,49 @@
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" href="libs/mdl/material.min.css">
-        <link rel="stylesheet" href="css/main.css" />
-        <link rel="stylesheet" href="css/ui.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,400&amp;lang=en">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <title>Table</title>
-    </head>
-    <body>
-        <div class="app">
+  <head>
+      <meta charset="utf-8" />
+      <meta name="format-detection" content="telephone=no" />
+      <meta name="msapplication-tap-highlight" content="no" />
+      <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' http: https: ws:">
+      <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+      <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+      <link rel="stylesheet" href="libs/mdl/material.min.css">
+      <link rel="stylesheet" href="css/main.css" />
+      <link rel="stylesheet" href="css/ui.css" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,400&amp;lang=en">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <title>Table</title>
+  </head>
+  <body>
 
-          <div class="mdl-card">
-            <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
-              <canvas width="400" height="200" id="container" class="mdl-card-media"></canvas>
-            </div>
-            <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
-              <div id="mic-list-label">
-                <strong>Microphone : </strong><span class="mic-label"></span>
-              </div>
-              <ul id="mic-list" class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="menubtn">
-              </ul>
-              <button id="menubtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-                <i class="material-icons" role="presentation">more_vert</i>
-                <span class="visuallyhidden">show menu</span>
-              </button>
-            </div>
-          </div>
+    <video id="player" src="res/output.webm" preload></video>
 
-          <div id="log"></div>
+    <div id="app" class="app">
+      <div class="mdl-card">
+        <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
+          <canvas width="400" height="200" id="graph" class="mdl-card-media"></canvas>
         </div>
+        <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
+          <div id="mic-list-label">
+            <strong>Microphone : </strong><span class="mic-label"></span>
+          </div>
+          <ul id="mic-list" class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="menubtn">
+          </ul>
+          <button id="menubtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">more_vert</i>
+            <span class="visuallyhidden">show menu</span>
+          </button>
+        </div>
+      </div>
+      <div id="log"></div>
+    </div>
 
-        <script src="cordova.js"></script>
-        <script src="libs/mdl/material.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="libs/mdl/material.min.js"></script>
 
-        <script src="js/mic_input.js"></script>
-        <script src="js/ui.js"></script>
-        <script src="js/graph.js"></script>
-        <script src="js/main.js"></script>
-        <script>
-          document.addEventListener('deviceready', function() {
-            setup();
-          }, false);
-        </script>
-    </body>
+    <script src="js/video.js"></script>
+    <script src="js/mic_input.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/graph.js"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>

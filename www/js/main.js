@@ -1,4 +1,8 @@
-var threshold = 0.4;
+var threshold = 0.5;
+var showSettings = true;
+var isActive = true;
+var app_el = document.getElementById('app');
+var updateId = 0;
 
 function setup() {
   // get list of vailable microphones
@@ -8,18 +12,55 @@ function setup() {
 
     setMicrophone(microphones[microphones.length-1].deviceId);
 
-    setupCanvas();
+    setupVideo();
+    setupGraph();
     setupAudio();
+
+    video_el.addEventListener('click', videoClicked, false);
+
+    // launch update loop
     update();
   });
 }
 
 function update() {
-  window.requestAnimationFrame(update);
-  // populate the analyser buffer with frequency bytes
-  analyser.getByteFrequencyData(analyserBuffer);
-  // draw a frequency graph
-  drawFreq(analyserBuffer);
+  if (isActive) {
+    updateId = window.requestAnimationFrame(update);
+  }
+
+  updateAudioInputs();
+
+  if (showSettings) {
+    updateGraph();
+  }
+}
+
+function onAudioSignalTriggered() {
+  playVideo();
+}
+
+function activate() {
+  if (isActive) return;
+  isActive = true;
+  update();
+}
+
+function deactivate() {
+  if (!isActive) return;
+  isActive = false;
+  stopVideo();
+  window.cancelAnimationFrame(updateId);
+}
+
+function videoClicked(ev) {
+  if (showSettings) {
+    app_el.style.display = 'none';
+    showSettings = false;
+  }
+  else {
+    app_el.style.display = '';
+    showSettings = true;
+  }
 }
 
 function log(text) {
@@ -27,3 +68,8 @@ function log(text) {
   elem.innerHTML = text;
   console.log(text);
 }
+
+document.addEventListener('deviceready', function() {
+  keepscreenon.enable();
+  setup();
+}, false);

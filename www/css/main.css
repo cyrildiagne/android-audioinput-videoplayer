@@ -8,8 +8,10 @@ body {
   -webkit-text-size-adjust: none;
   -webkit-user-select: none;
   margin:0px;
-  padding:0px;
+  padding:10px;
   height: 100%;
+  background-color: black; /*#f5f5f5*/;
+  box-sizing: border-box;
 }
 
 .app {
@@ -17,6 +19,18 @@ body {
   text-align: center;
 }
 
+.mdl-card {
+  max-width: 400px;
+}
+
 .mic-select {
   margin-bottom: 30px;
+}
+
+video {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: opacity 0.5s linear;
 }
