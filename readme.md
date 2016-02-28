@@ -29,20 +29,12 @@ npm install -g cordova-icon
 
 # Troubleshooting
 
-** The microphone doesn't work **
+**The microphone doesn't work**
 
 if the microphone doesn't work, make sure the microphone permission is enabled
 in the phone settings : `Settings > Apps > Permissions > Microphone`
 
-** I can't run the `cordova` command **
-
-I recommand uninstalling cordova if it's already installed and install using brew :
-
-```
-brew install cordova
-```
-
-** My video is not in WebM format **
+**My video is not in WebM format**
 
 You can convert a mp4 video to webm using ffmpeg :
 
