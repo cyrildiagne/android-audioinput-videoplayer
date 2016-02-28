@@ -1,9 +1,11 @@
+import events from './events.js';
+
 var miclist_el,
     miclistlabel_el;
 
 var labelDict = {};
 
-function setupSelectUI(micsInfos) {
+function setup(micsInfos) {
 
   miclist_el = document.querySelector('#mic-list');
   miclistlabel_el = document.querySelector('#mic-list-label');
@@ -23,21 +25,22 @@ function setupSelectUI(micsInfos) {
     li_el.className = 'mdl-menu__item';
     li_el.setAttribute('data', 'deviceId: "'+md.deviceId+'"');
     li_el.innerHTML = label;
-    li_el.addEventListener('click', liSelectedHandler, false);
+    li_el.addEventListener('click', onSelectHandler, false);
     // append to mic list
     miclist_el.appendChild(li_el);
   }
 }
 
-function liSelectedHandler(ev) {
+function onSelectHandler(ev) {
   var deviceId = ev.target.getAttribute('data').split(':')[1]; // rocknroll
   deviceId = deviceId.replace(/[" ]/g, ''); // remove quotes & spaces
 
   //TODO(cyril.diagne) dispatch event instead to remove this logic from view
-  setMicrophone(deviceId);
+  // setMicrophone(deviceId);
+  events.dispatch('select', deviceId);
 }
 
-function setMicrophoneDisplay(micId) {
+function select(micId) {
   var label = labelDict[micId];
   miclistlabel_el.querySelector('.mic-label').innerHTML = label;
 
@@ -45,3 +48,9 @@ function setMicrophoneDisplay(micId) {
   var menu_el = document.querySelector('.mdl-menu__container');
   menu_el.classList.remove('is-visible');
 }
+
+export default {
+  setup : setup,
+  select : select,
+  events : events
+};

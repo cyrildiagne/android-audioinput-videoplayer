@@ -1,38 +1,43 @@
-var video_el;
-var videoFadeOutLock = false;
-var videoIsPlaying = false;
+var el = null;
+var fadeOutLock = false;
+var isPlaying = false;
 
-function setupVideo() {
-  video_el = document.getElementById('player');
-  video_el.addEventListener('ended', onVideoEnded, false);
+function setup() {
+  el = document.getElementById('player');
+  el.addEventListener('ended', onEnded, false);
 }
 
-function playVideo() {
-
-  if (videoIsPlaying || videoFadeOutLock) return;
-
-  video_el.play();
-  video_el.style.opacity = 1;
-  videoIsPlaying = true;
-
+function play() {
+  if (isPlaying || fadeOutLock) return;
+  el.play();
+  el.style.opacity = 1;
+  isPlaying = true;
+  // restore screen light to 1
   brightness.setBrightness(1);
 }
 
-function stopVideo() {
-  video_el.currentTime = 0;
-  video_el.pause();
-  videoIsPlaying = false;
-
+function stop() {
+  el.pause();
+  el.currentTime = 0;
+  isPlaying = false;
+  // dim screen light to 0
   brightness.setBrightness(0);
 }
 
-function onVideoEnded(ev) {
-
-  video_el.style.opacity = 0;
-  videoFadeOutLock = true;
-
+function onEnded(ev) {
+  el.style.opacity = 0;
+  fadeOutLock = true;
+  // wait for css fade-out animation to complete before reseting video
   setTimeout(function() {
-    videoFadeOutLock = false;
-    stopVideo();
+    fadeOutLock = false;
+    stop();
   }, 500);
 }
+
+export default {
+  setup : setup,
+  play : play,
+  stop : stop,
+  isPlaying : () => isPlaying,
+  getEl : () => el
+};

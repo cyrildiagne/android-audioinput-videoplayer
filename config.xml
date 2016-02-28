@@ -83,6 +83,6 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="android" spec="~5.1.0" />
-    <plugin name="cordova.plugin.Brightness" spec="https://github.com/fiscal-cliff/phonegap-plugin-brightness.git" />
     <plugin name="cordova-plugin-chrome-apps-audiocapture" spec="~1.0.5" />
+    <plugin name="cordova.plugin.Brightness" spec="https://github.com/fiscal-cliff/phonegap-plugin-brightness.git" />
 </widget>

@@ -1,25 +1,30 @@
-System.config({ baseURL: '/js' });
+import config from 'js/config.js';
+import graph  from 'js/graph.js';
+import audio  from 'js/audio_input.js';
+import ui     from 'js/ui.js';
+import video  from 'js/video.js';
 
-var threshold = 0.5;
 var showSettings = true;
 var isActive = true;
 var app_el = document.getElementById('app');
 var updateId = 0;
 
 function setup() {
-  // get list of vailable microphones
-  getMicrophones(function(microphones) {
-    // populate select input
-    setupSelectUI(microphones);
-
-    setMicrophone(microphones[microphones.length-1].deviceId);
-
-    setupVideo();
-    setupGraph();
-    setupAudio();
-
-    video_el.addEventListener('click', videoClicked, false);
-
+  // setup audio & grab list of available inputs
+  audio.setup(function(inputs) {
+    // populate UI with available audio inputs
+    ui.setup(inputs);
+    ui.events.addListener('select', onInputSelected);
+    // use last input available by default (jack/bottom microphone on Android)
+    var lastDevice = inputs[inputs.length-1].deviceId;
+    audio.use(lastDevice);
+    audio.events.addListener('signal', onAudioSignalTriggered);
+    audio.events.addListener('using', onAudioDeviceChanged);
+    // setup video player
+    video.setup();
+    video.getEl().addEventListener('click', onVideoClicked, false);
+    // setup a graph to visualize audio input signal
+    graph.setup();
     // launch update loop
     update();
   });
@@ -31,17 +36,13 @@ function update() {
   }
 
   // only update audio when settings are showing or video is not playing
-  if (showSettings || !videoIsPlaying) {
-    updateAudioInputs();
+  if (showSettings || !video.isPlaying()) {
+    audio.update();
   }
 
   if (showSettings) {
-    updateGraph();
+    graph.update(audio.getBuffer());
   }
-}
-
-function onAudioSignalTriggered() {
-  playVideo();
 }
 
 function activate() {
@@ -53,16 +54,37 @@ function activate() {
 function deactivate() {
   if (!isActive) return;
   isActive = false;
-  stopVideo();
+  video.stop();
   window.cancelAnimationFrame(updateId);
 }
 
-function videoClicked(ev) {
+function log(text) {
+  var elem = document.getElementById('log');
+  elem.innerHTML = text;
+  console.log(text);
+}
+
+// -- Events Handlers --
+
+function onInputSelected(deviceId) {
+  console.log(deviceId);
+  audio.use(deviceId);
+}
+
+function onAudioSignalTriggered() {
+  video.play();
+}
+
+function onAudioDeviceChanged(deviceId) {
+  ui.select(deviceId);
+}
+
+function onVideoClicked(ev) {
   if (showSettings) {
     app_el.style.display = 'none';
     showSettings = false;
     // turn off the screen if no video is playing
-    if (!videoIsPlaying) {
+    if (!video.isPlaying()) {
       brightness.setBrightness(0);
     }
   }
@@ -73,14 +95,4 @@ function videoClicked(ev) {
   }
 }
 
-function log(text) {
-  var elem = document.getElementById('log');
-  elem.innerHTML = text;
-  console.log(text);
-}
-
-document.addEventListener('deviceready', function() {
-  window.brightness = cordova.require("cordova.plugin.Brightness.Brightness");
-  brightness.setKeepScreenOn(true);
-  setup();
-}, false);
+export default setup;

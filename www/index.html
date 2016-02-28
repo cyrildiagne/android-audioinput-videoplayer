@@ -3,7 +3,7 @@
       <meta charset="utf-8" />
       <meta name="format-detection" content="telephone=no" />
       <meta name="msapplication-tap-highlight" content="no" />
-      <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' http: https: ws:">
+      <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' http: https: ws:">
       <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
       <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
       <link rel="stylesheet" href="libs/mdl/material.min.css">
@@ -39,11 +39,18 @@
 
     <script src="cordova.js"></script>
     <script src="libs/mdl/material.min.js"></script>
+    <script src="libs/traceur/traceur.js"></script>
+    <script src="libs/traceur/BrowserSystem.js"></script>
+    <script src="libs/traceur/bootstrap.js"></script>
 
-    <script src="js/video.js"></script>
-    <script src="js/mic_input.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/graph.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js" type="module"></script>
+    <script type=module>
+      import main from './js/main.js';
+      document.addEventListener('deviceready', function() {
+        window.brightness = cordova.require("cordova.plugin.Brightness.Brightness");
+        window.brightness.setKeepScreenOn(true);
+        main();
+      }, false);
+    </script>
   </body>
 </html>
