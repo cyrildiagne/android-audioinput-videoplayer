@@ -1,3 +1,10 @@
+/**
+ * Cordova based html player
+ * that plays videos on audio signal input (microphone or line-in)
+ *
+ * @author Cyril Diagne (cyril.diagne@ecal.ch)
+ */
+
 import config from 'js/config.js';
 import graph  from 'js/graph.js';
 import audio  from 'js/audio_input.js';
@@ -9,6 +16,9 @@ var isActive = true;
 var app_el = document.getElementById('app');
 var updateId = 0;
 
+/**
+ * Setup the application
+ */
 function setup() {
   // setup audio & grab list of available inputs
   audio.setup(function(inputs) {
@@ -30,6 +40,10 @@ function setup() {
   });
 }
 
+/**
+ * 60hz update loop
+ * @private
+ */
 function update() {
   if (isActive) {
     updateId = window.requestAnimationFrame(update);
@@ -45,12 +59,20 @@ function update() {
   }
 }
 
+/**
+ * activate the update loop
+ * @private
+ */
 function activate() {
   if (isActive) return;
   isActive = true;
   update();
 }
 
+/**
+ * deactivate the update loop and stop the video
+ * @private
+ */
 function deactivate() {
   if (!isActive) return;
   isActive = false;
@@ -58,27 +80,45 @@ function deactivate() {
   window.cancelAnimationFrame(updateId);
 }
 
-function log(text) {
-  var elem = document.getElementById('log');
-  elem.innerHTML = text;
-  console.log(text);
-}
 
 // -- Events Handlers --
 
+
+/**
+ * Handler for UI item selection
+ * @private
+ *
+ * @param  {String} deviceId audio input device id
+ */
 function onInputSelected(deviceId) {
-  console.log(deviceId);
   audio.use(deviceId);
 }
 
+
+/**
+ * Handler for audio signal detection
+ * @private
+ */
 function onAudioSignalTriggered() {
   video.play();
 }
 
+/**
+ * Handler for change of audio input device
+ * @private
+ *
+ * @param  {String} deviceId audio input device id
+ */
 function onAudioDeviceChanged(deviceId) {
   ui.select(deviceId);
 }
 
+/**
+ * Handler for video click events
+ * @private
+ *
+ * @param  {Event} ev event
+ */
 function onVideoClicked(ev) {
   if (showSettings) {
     app_el.style.display = 'none';
@@ -95,4 +135,7 @@ function onVideoClicked(ev) {
   }
 }
 
+/**
+ * Export module's public methods
+ */
 export default setup;

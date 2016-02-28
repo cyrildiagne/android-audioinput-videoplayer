@@ -1,18 +1,27 @@
+/**
+ * Bar graph for FFT audio signal visualization
+ *
+ * @author Cyril Diagne (cyril.diagne@ecal.ch)
+ */
+
 import config from './config.js';
 
 var canvas, ctx;
 
+/**
+ * Setup the graph canvas
+ */
 function setup() {
   canvas = document.getElementById("graph");
   canvas.addEventListener('click', onClicked, false);
   ctx = canvas.getContext("2d");
 }
 
-function onClicked(ev) {
-  var padding = 10;
-  config.threshold = 1 - (ev.clientY - padding) / canvas.clientHeight;
-}
-
+/**
+ * Update the graph
+ *
+ * @param {Array} buffer the fft array buffer
+ */
 function update(buffer) {
   const w = canvas.width;
   const h = canvas.height;
@@ -33,7 +42,21 @@ function update(buffer) {
   }
 }
 
+/**
+ * Handler for click event on the canvas
+ * @private
+ *
+ * @param {Event} ev event
+ */
+function onClicked(ev) {
+  var padding = 10;
+  config.threshold = 1 - (ev.clientY - padding) / canvas.clientHeight;
+}
+
+/**
+ * Export module's public methods
+ */
 export default {
-  setup : setup,
-  update : update
+  setup,
+  update
 };
