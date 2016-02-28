@@ -1,3 +1,5 @@
+System.config({ baseURL: '/js' });
+
 var threshold = 0.5;
 var showSettings = true;
 var isActive = true;
@@ -28,7 +30,10 @@ function update() {
     updateId = window.requestAnimationFrame(update);
   }
 
-  updateAudioInputs();
+  // only update audio when settings are showing or video is not playing
+  if (showSettings || !videoIsPlaying) {
+    updateAudioInputs();
+  }
 
   if (showSettings) {
     updateGraph();
@@ -56,10 +61,15 @@ function videoClicked(ev) {
   if (showSettings) {
     app_el.style.display = 'none';
     showSettings = false;
+    // turn off the screen if no video is playing
+    if (!videoIsPlaying) {
+      brightness.setBrightness(0);
+    }
   }
   else {
     app_el.style.display = '';
     showSettings = true;
+    brightness.setBrightness(1);
   }
 }
 
@@ -70,6 +80,7 @@ function log(text) {
 }
 
 document.addEventListener('deviceready', function() {
-  keepscreenon.enable();
+  window.brightness = cordova.require("cordova.plugin.Brightness.Brightness");
+  brightness.setKeepScreenOn(true);
   setup();
 }, false);
