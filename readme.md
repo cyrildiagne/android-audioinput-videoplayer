@@ -10,6 +10,14 @@
 
 `cd android-audioinput-videoplayer`
 
+- install cordova and the cordova-icon tool
+
+```
+brew install cordova
+brew install node
+npm install -g cordova-icon
+```
+
 - configure the android platform :
 
 `cordova platform add android`
@@ -32,14 +40,6 @@ I recommand uninstalling cordova if it's already installed and install using bre
 
 ```
 brew install cordova
-```
-
-You can convert a mp4 video to webm using ffmpeg :
-
-```
-brew install libvpx
-brew install ffmpeg --with-libvpx --with-libvorbis
-ffmpeg -i input.mp4 -c:v libvpx -qmin 0 -qmax 20 -crf 5 -b:v 4M -an output.webm
 ```
 
 ** My video is not in WebM format **
