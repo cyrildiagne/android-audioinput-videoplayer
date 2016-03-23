@@ -13,8 +13,8 @@
 - install cordova and the cordova-icon tool
 
 ```
-brew install cordova
 brew install node
+npm install -g cordova
 npm install -g cordova-icon
 ```
 
